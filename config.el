@@ -36,6 +36,8 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+;; Don't continue commented lines with o/O
+(setq +evil-want-o/O-to-continue-comments nil)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
