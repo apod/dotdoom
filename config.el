@@ -51,6 +51,32 @@
 ;; they are implemented.
 ;;
 
+;; Having some issues with +default--delete-backward-char-a at the moment so remove it
+(advice-remove #'delete-backward-char #'+default--delete-backward-char-a)
+
+(defun ap-smartparens-change-line ()
+  "Kill sexp and then enter insert state."
+  (interactive)
+  (sp-kill-hybrid-sexp nil)
+  (evil-insert-state))
+
+(defun ap-indent-defun ()
+  "Indent current lisp function."
+  (interactive)
+  (let ((l (save-excursion (beginning-of-defun 1) (point)))
+        (r (save-excursion (end-of-defun 1) (point))))
+    (indent-region l r)))
+
+(map! :mode (emacs-lisp-mode clojure-mode clojurescript-mode)
+      :n "D" #'sp-kill-hybrid-sexp
+      :n "C" #'ap-smartparens-change-line
+      (:leader
+       (:prefix ("l" . "sexp manipulation")
+        :desc "Indent function" "i" #'ap-indent-defun
+        :desc "Raise sexp"      "r" #'sp-raise-sexp
+        :desc "Forward slurp"   "." #'sp-forward-slurp-sexp
+        :desc "Forward barf"    "," #'sp-forward-barf-sexp)))
+
 ;; Load local machine configuration from config.local.el
 (let ((local-config-file (expand-file-name "config.local.el" doom-private-dir)))
   (when (file-exists-p local-config-file)
