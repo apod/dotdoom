@@ -77,6 +77,9 @@
         :desc "Forward slurp"   "." #'sp-forward-slurp-sexp
         :desc "Forward barf"    "," #'sp-forward-barf-sexp)))
 
+;; Unbind the default C-x C-s (company-yasnippet) on insert mode
+(map! (:prefix "C-x" :i "C-s" nil))
+
 ;; Load local machine configuration from config.local.el
 (let ((local-config-file (expand-file-name "config.local.el" doom-private-dir)))
   (when (file-exists-p local-config-file)
